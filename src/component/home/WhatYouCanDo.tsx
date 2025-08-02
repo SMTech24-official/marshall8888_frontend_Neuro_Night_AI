@@ -23,7 +23,7 @@ const WhatYouCanDo = () => {
   ];
 
   return (
-    <section className="bg-[#0a0a0a] py-16 px-4">
+    <section className=" py-16 px-4">
       <div className="max-w-7xl mx-auto text-center">
         <h2 className="text-3xl md:text-4xl font-bold text-white mb-12">
           What You Can Do on <span className="text-red-500">EGEAL</span>

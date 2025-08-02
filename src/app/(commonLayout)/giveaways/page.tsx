@@ -1,6 +1,8 @@
+
 import FounderSetup from "@/component/giveaways/FounderSetup";
 import FundsHandling from "@/component/giveaways/FundHandling";
 import GiveawayStatus from "@/component/giveaways/GiveawaysStatus";
+import GiveawaysTable from "@/component/giveaways/GiveawayTable";
 import JoinInstructions from "@/component/giveaways/JoinInstruction";
 import VerifiedByAiBot from "@/component/giveaways/VerifiedByAi";
 import Container from "@/component/shared/Container";
@@ -41,8 +43,8 @@ export default function page() {
         </MainHeader>
 
         <FounderSetup />
-        {/* <CurrentGiveaways /> */}
-        {/* <GiveawaysTable /> */}
+        
+          <GiveawaysTable /> 
         <JoinInstructions />
         <GiveawayStatus />
         <VerifiedByAiBot />
