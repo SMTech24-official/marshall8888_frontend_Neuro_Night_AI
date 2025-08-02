@@ -18,13 +18,10 @@ export const giveawayApi = baseApi.injectEndpoints({
       providesTags: ["Giveaway"],
     }),
 
-    getAllOngoingGiveaway: builder.query<
-      any,
-      { page?: number; limit?: number }
-    >({
-      query: ({ page = 1, limit = 10 } = {}) => ({
+    getAllOngoingGiveaway: builder.query<any, { page?: number; limit?: number, sortBy?: string, sortOrder?: "asc" | "desc" }>({
+      query: ({ page = 1, limit = 10 , sortBy, sortOrder } = {}) => ({
         url: `/giveaway/ongoing-giveaways`,
-        params: { page, limit },
+        params: { page, limit, sortBy, sortOrder },
       }),
       providesTags: ["AllOngoingGiveawayIds"],
     }),
