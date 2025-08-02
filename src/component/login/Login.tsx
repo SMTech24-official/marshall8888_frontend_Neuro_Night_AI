@@ -41,7 +41,7 @@ export default function LoginForm() {
       );
 
       // Redirect to success page first
-console.log("Login successful, redirecting...", response);
+      console.log("Login successful, redirecting...", response);
       // Show success message with role if available
       if (response.success) {
         const role = response.data?.role || "user";

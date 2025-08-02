@@ -17,17 +17,25 @@ export const giveawayApi = baseApi.injectEndpoints({
       query: () => "/giveaway",
       providesTags: ["Giveaway"],
     }),
-    getAllOngoingGiveaway: builder.query<any, void>({
-      query: () => "/giveaway/ongoing-giveaways",
+
+    getAllOngoingGiveaway: builder.query<
+      any,
+      { page?: number; limit?: number }
+    >({
+      query: ({ page = 1, limit = 10 } = {}) => ({
+        url: `/giveaway/ongoing-giveaways`,
+        params: { page, limit },
+      }),
       providesTags: ["AllOngoingGiveawayIds"],
     }),
+
     getGiveawayStats: builder.query<any, void>({
       query: () => "/giveaway/stats",
       providesTags: ["Giveaway"],
     }),
-    getCurrentGiveaway: builder.query<any, void>({
-      query: () => "/giveaway/current-giveaways",
-      providesTags: ["CurrentGiveaway"],
+    getGiveawaysWithAtLeastOneParticipant: builder.query<any, void>({
+      query: () => "/giveaway/get-giveaways/pick-winner",
+      providesTags: ["getGiveawaysWithAtLeastOneParticipant"],
     }),
 
     getGiveawayById: builder.query({
@@ -59,6 +67,6 @@ export const {
   useUpdateGiveawayMutation,
   useDeleteGiveawayMutation,
   useGetGiveawayStatsQuery,
-  useGetCurrentGiveawayQuery,
+  useGetGiveawaysWithAtLeastOneParticipantQuery,
   useGetAllOngoingGiveawayQuery,
 } = giveawayApi;

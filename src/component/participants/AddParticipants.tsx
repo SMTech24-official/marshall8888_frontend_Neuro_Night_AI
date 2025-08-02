@@ -1,4 +1,4 @@
-"use client"
+"use client";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useGetAllOngoingGiveawayQuery } from "@/redux/api/Giveaway/giveawayApi";
 import { useAddParticipantMutation } from "@/redux/api/Participant/participantApiSlice";
@@ -6,6 +6,7 @@ import { useState, ChangeEvent, FormEvent } from "react";
 import toast from "react-hot-toast";
 import Container from "../shared/Container";
 import { IGiveaway } from "@/types/giveaway/giveaway";
+import { useSearchParams } from "next/navigation";
 
 interface Proof {
   ruleTitle: string;
@@ -20,39 +21,53 @@ interface ParticipantFormData {
 }
 
 export default function AddParticipantForm() {
-  const [formData, setFormData] = useState<Omit<ParticipantFormData, 'proofs'>>({
-    giveawayId: "",
-    socialUsername: "",
-    videoLink: "",
-  });
+  const searchParams = useSearchParams();
+  const urlGiveawayId = searchParams.get("giveawayId");
+
+  const [formData, setFormData] = useState<Omit<ParticipantFormData, "proofs">>(
+    {
+      giveawayId: urlGiveawayId || "",
+      socialUsername: "",
+      videoLink: "",
+    }
+  );
 
   const [proofs, setProofs] = useState<Proof[]>([]);
   const [addParticipant, { isLoading }] = useAddParticipantMutation();
-  const { data } = useGetAllOngoingGiveawayQuery();
-  const giveaways = data?.data as IGiveaway[] || [];
+
+  const { data: response } = useGetAllOngoingGiveawayQuery({});
+  const giveaways = (response?.data?.data as IGiveaway[]) || [];
+
+  console.log("giveaways", giveaways);
 
   const handleGiveawaySelect = (e: ChangeEvent<HTMLSelectElement>) => {
     const giveawayId = e.target.value;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       giveawayId,
       socialUsername: "",
-      videoLink: ""
+      videoLink: "",
     }));
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleProofTitleChange = (index: number, e: ChangeEvent<HTMLInputElement>) => {
+  const handleProofTitleChange = (
+    index: number,
+    e: ChangeEvent<HTMLInputElement>
+  ) => {
     const newProofs = [...proofs];
     newProofs[index].ruleTitle = e.target.value;
     setProofs(newProofs);
   };
 
-  const handleProofChange = async (index: number, e: ChangeEvent<HTMLInputElement>) => {
+  const handleProofChange = async (
+    index: number,
+    e: ChangeEvent<HTMLInputElement>
+  ) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -105,7 +120,7 @@ export default function AddParticipantForm() {
       return;
     }
 
-    if (proofs.some(proof => !proof.imageUrl || !proof.ruleTitle)) {
+    if (proofs.some((proof) => !proof.imageUrl || !proof.ruleTitle)) {
       toast.error("Please provide all required proofs and their titles");
       return;
     }
@@ -113,7 +128,7 @@ export default function AddParticipantForm() {
     try {
       const submissionData = {
         ...formData,
-        proofs
+        proofs,
       };
 
       console.log("Submitting participant data:", submissionData);
@@ -140,7 +155,9 @@ export default function AddParticipantForm() {
   return (
     <Container>
       <div className="p-6 my-20 max-w-3xl mx-auto bg-[#000000] border border-red-700 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold text-white mb-6">🎉 Join a Giveaway</h2>
+        <h2 className="text-2xl font-bold text-white mb-6">
+          🎉 Join a Giveaway
+        </h2>
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label className="block text-white font-semibold mb-1">
