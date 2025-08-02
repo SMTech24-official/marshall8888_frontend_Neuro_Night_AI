@@ -31,7 +31,7 @@ export const getAllUsers = async ({
     const url = `${
       process.env.NEXT_PUBLIC_BASE_API
     }/user?${queryParams.toString()}`;
-
+//fdsafdsaf
     const res = await fetch(url, {
       method: "GET",
       headers: {
